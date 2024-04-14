@@ -1,0 +1,16 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PYG{k+kn}{import} \PYG{n+nn}{pandas} \PYG{k}{as} \PYG{n+nn}{pd}
+    \PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+    \PYG{c+c1}{\PYGZsh{}读取收盘价，个股权重，指数数据}
+    \PYG{n}{close} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{read\PYGZus{}feather}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}close.txt\PYGZsq{}}\PYG{p}{)}\PYG{o}{.}\PYG{n}{set\PYGZus{}index}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}date\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{weight} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{read\PYGZus{}feather}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}weight.txt\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{index} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{read\PYGZus{}feather}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}000016.txt\PYGZsq{}}\PYG{p}{)}\PYG{o}{.}\PYG{n}{set\PYGZus{}index}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}date\PYGZsq{}}\PYG{p}{)}
+    \PYG{c+c1}{\PYGZsh{}计算每个交易日的收益率（收盘价已复权，可以直接计算）}
+    \PYG{n}{ret} \PYG{o}{=} \PYG{p}{(}\PYG{n}{close} \PYG{o}{\PYGZhy{}} \PYG{n}{close}\PYG{o}{.}\PYG{n}{shift}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{))} \PYG{o}{/} \PYG{n}{close}
+    \PYG{c+c1}{\PYGZsh{}历史平均收益率}
+    \PYG{n}{mu\PYGZus{}vec} \PYG{o}{=} \PYG{n}{ret}\PYG{o}{.}\PYG{n}{mean}\PYG{p}{()}
+    \PYG{c+c1}{\PYGZsh{}历史收益率的协方差矩阵}
+    \PYG{n}{varSigma} \PYG{o}{=} \PYG{n}{ret}\PYG{o}{.}\PYG{n}{cov}\PYG{p}{()}
+    \PYG{c+c1}{\PYGZsh{}cholesky分解}
+    \PYG{n}{A\PYGZus{}cholesky} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{linalg}\PYG{o}{.}\PYG{n}{cholesky}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{n}{varSigma}\PYG{p}{))}
+\end{Verbatim}

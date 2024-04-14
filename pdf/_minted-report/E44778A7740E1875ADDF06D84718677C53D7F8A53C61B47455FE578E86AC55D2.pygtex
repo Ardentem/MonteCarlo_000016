@@ -1,0 +1,23 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PYG{c+c1}{\PYGZsh{}导入绘图库并设置}
+    \PYG{k+kn}{import} \PYG{n+nn}{matplotlib.pyplot} \PYG{k}{as} \PYG{n+nn}{plt}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{rcParams}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}font.sans\PYGZhy{}serif\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}SimHei\PYGZsq{}}\PYG{p}{]}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{n}{figsize}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mi}{12}\PYG{p}{,}\PYG{l+m+mi}{6}\PYG{p}{),}\PYG{n}{dpi}\PYG{o}{=}\PYG{l+m+mi}{400}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{xlabel}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}日期\PYGZsq{}}\PYG{p}{,}\PYG{n}{fontsize}\PYG{o}{=}\PYG{l+m+mi}{15}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{ylabel}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}000016.SH\PYGZsq{}}\PYG{p}{,}\PYG{n}{fontsize}\PYG{o}{=}\PYG{l+m+mi}{15}\PYG{p}{)}
+    \PYG{c+c1}{\PYGZsh{}画历史数据}
+    \PYG{n}{index\PYGZus{}history} \PYG{o}{=} \PYG{n}{index}\PYG{o}{.}\PYG{n}{head}\PYG{p}{(}\PYG{l+m+mi}{15}\PYG{p}{)[}\PYG{l+s+s1}{\PYGZsq{}close\PYGZsq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{iloc}\PYG{p}{[::}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}
+    \PYG{n}{index\PYGZus{}history}\PYG{o}{.}\PYG{n}{index} \PYG{o}{=} \PYG{p}{[}\PYG{n}{k}\PYG{p}{[}\PYG{l+m+mi}{5}\PYG{p}{:]} \PYG{k}{for} \PYG{n}{k} \PYG{o+ow}{in} \PYG{n}{index\PYGZus{}history}\PYG{o}{.}\PYG{n}{index}\PYG{p}{]}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{index\PYGZus{}history}\PYG{p}{,}\PYG{n}{marker}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}.\PYGZsq{}}\PYG{p}{,}\PYG{n}{label}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}历史数据\PYGZsq{}}\PYG{p}{,}\PYG{n}{color}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}black\PYGZsq{}}\PYG{p}{,}\PYG{n}{linewidth}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{)}
+    \PYG{c+c1}{\PYGZsh{}画预测数据（这里30表示30组）}
+    \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{):}
+        \PYG{n}{ret\PYGZus{}sim} \PYG{o}{=} \PYG{n}{monte\PYGZus{}carlo\PYGZus{}simulate}\PYG{p}{()}
+        \PYG{n}{weight}\PYG{o}{.}\PYG{n}{index} \PYG{o}{=} \PYG{n}{weight}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}code\PYGZsq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n+nb}{str}\PYG{p}{)}
+        \PYG{n}{index\PYGZus{}ret\PYGZus{}sim} \PYG{o}{=} \PYG{n}{weight}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}weight\PYGZsq{}}\PYG{p}{]}\PYG{o}{*} \PYG{n}{ret\PYGZus{}sim} \PYG{o}{*} \PYG{l+m+mf}{0.01}
+        \PYG{n}{index\PYGZus{}sim} \PYG{o}{=} \PYG{n}{index\PYGZus{}ret\PYGZus{}sim}\PYG{o}{.}\PYG{n}{T}\PYG{o}{.}\PYG{n}{sum}\PYG{p}{()} \PYG{o}{*} \PYG{n}{index}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}close\PYGZsq{}}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}
+        \PYG{n}{index\PYGZus{}sim}\PYG{o}{.}\PYG{n}{index} \PYG{o}{=} \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}4/12\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}4/15\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}4/16\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}4/17\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}4/18\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}4/19\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}4/22\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}4/23\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}4/24\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}4/25\PYGZsq{}}\PYG{p}{]}
+        \PYG{n}{index\PYGZus{}sim}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}4/11\PYGZsq{}}\PYG{p}{]}\PYG{o}{=}\PYG{n}{index}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}close\PYGZsq{}}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}
+        \PYG{n}{index\PYGZus{}sim} \PYG{o}{=} \PYG{n}{index\PYGZus{}sim}\PYG{o}{.}\PYG{n}{sort\PYGZus{}index}\PYG{p}{()}
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{index\PYGZus{}sim}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{vlines}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}4/11\PYGZsq{}}\PYG{p}{,}\PYG{l+m+mi}{2300}\PYG{p}{,}\PYG{l+m+mi}{2450}\PYG{p}{,}\PYG{n}{colors}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}red\PYGZsq{}}\PYG{p}{,}\PYG{n}{linestyles}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}dashed\PYGZsq{}}\PYG{p}{)}
+\end{Verbatim}

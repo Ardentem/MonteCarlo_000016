@@ -1,0 +1,18 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PYG{k}{def} \PYG{n+nf}{monte\PYGZus{}carlo\PYGZus{}simulate}\PYG{p}{():}
+        \PYG{c+c1}{\PYGZsh{} 生成50组标准正态随机变量，每组10个}
+        \PYG{n}{epsilon\PYGZus{}m} \PYG{o}{=} \PYG{p}{[]}
+        \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{50}\PYG{p}{):}
+            \PYG{n}{epsilon\PYGZus{}m}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{random}\PYG{o}{.}\PYG{n}{normal}\PYG{p}{(}\PYG{n}{loc}\PYG{o}{=}\PYG{l+m+mf}{0.0}\PYG{p}{,} \PYG{n}{scale}\PYG{o}{=}\PYG{l+m+mf}{1.0}\PYG{p}{,} \PYG{n}{size}\PYG{o}{=}\PYG{l+m+mi}{10}\PYG{p}{))}
+        \PYG{n}{epsilon\PYGZus{}m} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{n}{epsilon\PYGZus{}m}\PYG{p}{)}
+
+        \PYG{c+c1}{\PYGZsh{} 分10天，每天50个随机变量，用于模拟个股收益率}
+        \PYG{n}{ret\PYGZus{}sim} \PYG{o}{=} \PYG{p}{[]}
+        \PYG{k}{for} \PYG{n}{epsilon\PYGZus{}vec} \PYG{o+ow}{in} \PYG{n}{epsilon\PYGZus{}m}\PYG{o}{.}\PYG{n}{T}\PYG{p}{:}
+            \PYG{c+c1}{\PYGZsh{}计算联合布朗运动方程向量形式，即前一部分公式（13）的右半部分}
+            \PYG{n}{ret\PYGZus{}log\PYGZus{}vec} \PYG{o}{=} \PYG{n}{mu\PYGZus{}vec}\PYG{o}{\PYGZhy{}}\PYG{l+m+mf}{0.5}\PYG{o}{*}\PYG{n}{A\PYGZus{}cholesky}\PYG{o}{*}\PYG{n}{A\PYGZus{}cholesky}\PYG{o}{@}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{ones}\PYG{p}{(}\PYG{l+m+mi}{50}\PYG{p}{)}\PYG{o}{.}\PYG{n}{T}\PYG{p}{)} \PYG{o}{+} \PYG{n}{A\PYGZus{}cholesky}\PYG{n+nd}{@epsilon\PYGZus{}vec}
+            \PYG{n}{ret\PYGZus{}sim}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{exp}\PYG{p}{(}\PYG{n}{ret\PYGZus{}log\PYGZus{}vec}\PYG{p}{))}
+        \PYG{n}{ret\PYGZus{}sim} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{DataFrame}\PYG{p}{(}\PYG{n}{ret\PYGZus{}sim}\PYG{p}{)}
+        \PYG{c+c1}{\PYGZsh{} 返回五十支股票的（收益率+1）矩阵}
+        \PYG{k}{return} \PYG{n}{ret\PYGZus{}sim}
+\end{Verbatim}
